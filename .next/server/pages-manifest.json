@@ -2,6 +2,12 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/detail": "pages/detail.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/edit/[noteId]": "pages/edit/[noteId].js",
+  "/api/getAll": "pages/api/getAll.js",
+  "/add": "pages/add.js",
+  "/api/add": "pages/api/add.js",
+  "/detail/[noteId]": "pages/detail/[noteId].js",
+  "/api/get/[noteId]": "pages/api/get/[noteId].js",
+  "/api/edit/[noteId]": "pages/api/edit/[noteId].js"
 }

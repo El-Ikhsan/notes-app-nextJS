@@ -1,8 +1,106 @@
-import { Flex, Heading, Input, Stack, Button, Grid, GridItem, 
-  Spacer, Card, CardBody, CardHeader, Text, IconButton} from '@chakra-ui/react';
-  import { EditIcon, ViewIcon } from '@chakra-ui/icons'
-  import Link from 'next/link';
+import { Flex, Heading, Stack, Button, Spacer, Card, CardBody, CardHeader, Text, IconButton} from '@chakra-ui/react';
+import { ViewIcon } from '@chakra-ui/icons'
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
 const Home = () => {
+  const [notes, setNotes] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+
+    const fetchNotes = async () => {
+      try {
+        const response = await fetch('/api/getAll');
+        if (response.ok) {
+          const data = await response.json();
+          setNotes(data);
+        } else {
+          console.error('Failed to fetch notes');
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching notes:', error);
+      }
+    };
+
+    fetchNotes();
+  }, []);
+
+  const handleDeleteAll = async () => {
+
+      try {
+        const response = await fetch(`/api/removeAll`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          router.reload();
+        } else {
+          console.error('Gagal menghapus data catatan');
+        }
+      } catch (error) {
+        console.error('Terjadi kesalahan saat menghapus data catatan:', error);
+      }
+    
+  };
+
+  let content;
+  if (notes.length === 0) {
+    content = (
+      <Flex
+        background="#ba9e97" 
+        h="67vh" 
+        w="80vw" 
+        rounded="md" 
+        p={4} 
+        justify="center" 
+        align="center"
+      >
+        <Heading size="md" color="white">Tidak ada catatan</Heading>
+      </Flex>
+    )} else {
+      content = (
+        <Flex 
+          background="#ba9e97" 
+          h="67vh" 
+          w="80vw" 
+          direction="row" 
+          rounded="md" 
+          p={4}
+          justify="flex-start" 
+          overflow="auto" 
+          wrap="wrap" 
+          columnGap={9} 
+          rowGap={4}
+        >
+                
+        {notes.map(note => (
+
+          <Card key={note.id} w="17vw" h="28vh" background="#EBD8B7">
+
+            <CardHeader w="100%">
+              <Flex direction="row" justify="space-between" align="center">
+                <Heading size="lg" fontSize="24px" w="54%" noOfLines={1}>{note.title}</Heading>
+                <Flex direction="row" align="center" justify="flex-end" w="48%">
+                  <Link href={`/detail/${note.id}`}>
+                    <IconButton variant='outline' colorScheme='teal' aria-label='view note' icon={<ViewIcon />} />
+                  </Link>
+                </Flex>
+              </Flex>
+              <Heading as='h3' size="xs" noOfLines={1}>
+                {new Date(note.createdAt).toISOString().split('T')[0]}
+              </Heading>
+            </CardHeader>
+
+            <CardBody mt="-4vh">
+              <Text noOfLines={[1, 2, 3]}>{note.body}</Text>
+            </CardBody>
+
+          </Card>
+        ))}
+        </Flex>
+    )}
+
   return (
     <Flex
       w="100vw"
@@ -31,42 +129,14 @@ const Home = () => {
               Add Note
             </Button>
           </Link>
-          <Button bg="#6c9c88" _hover={{ bg: "#578974" }} color="white" w="45vw" variant='solid'>
-            Delete Note
+          <Button bg="#6c9c88" _hover={{ bg: "#578974" }} color="white" w="45vw" variant='solid' onClick={handleDeleteAll}>
+            Delete All
           </Button>
         </Stack>
 
-        <Spacer/>
+        <Spacer />
 
-        <Flex background="#ba9e97" h="67vh" w="80vw" direction="row" 
-        rounded="md" p={6} justify="flex-start" wrap="wrap" columnGap={9} rowGap={4}>
-          
-          <Card w="17vw" h="28vh" background="#EBD8B7">
-
-          <CardHeader w="100%">
-            <Flex direction="row" justify="space-between" align="center">
-              <Heading size="xl" noOfLines={[1, 2, 3]}>Title</Heading>
-              <Flex direction="row" align="center" justify="space-between" w="48%">
-              <Link href="/edit">
-                <IconButton variant='outline'colorScheme='teal' aria-label='edit note' icon={<EditIcon />} />
-              </Link>
-              <IconButton variant='outline'colorScheme='teal' aria-label='view note' icon={<ViewIcon />} />
-              </Flex>
-            </Flex>
-              <Heading as='h3' size="md">Date</Heading>
-          </CardHeader>
-
-            <CardBody mt="-4vh">
-              <Text noOfLines={[1, 2, 3]}>
-                View a summary of all your customers over the last month.
-                View a summary of all your customers over the last month.
-                View a summary of all your customers over the last month.
-                View a summary of all your customers over the last month.
-              </Text>
-            </CardBody>
-          </Card>
-
-        </Flex>
+        {content}
 
       </Flex>
     </Flex>

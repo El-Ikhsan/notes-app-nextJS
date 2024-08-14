@@ -27,10 +27,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/detail": [
+    "/add": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/detail.js"
+      "static/chunks/pages/add.js"
+    ],
+    "/detail/[noteId]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/detail/[noteId].js"
+    ],
+    "/edit/[noteId]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/edit/[noteId].js"
     ]
   },
   "ampFirstPages": []
