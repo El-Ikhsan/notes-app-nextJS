@@ -11,10 +11,8 @@ npm install
 3. Buat folder `.env` dan setel endpoint ke database. Contoh:
 
 ```
-DATABASE_URL="mysql://root@localhost:3306/dibimbing"
+DATABASE_URL="postgresql://postgres@localhost:5432/dibimbing"
 ```
-
-3. Hapus folder `prisma/migrations`
 
 4. Jalankan perintah:
 
