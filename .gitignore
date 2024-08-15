@@ -1,2 +1,11 @@
-node_modules
+# Next.js build output
+.next/
+
+# Prisma migration files (optional, based on your use case)
+prisma/migrations/
+
+# Node modules
+node_modules/
+
+# Environment variables
 .env
