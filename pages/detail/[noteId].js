@@ -13,7 +13,9 @@ const Detail = () => {
     const fetchNote = async () => {
       if (noteId) {
         try {
-          const response = await fetch(`/api/get/${noteId}`);
+          const response = await fetch(`/api/get/${noteId}`, {
+            method: 'GET',
+          });
           if (response.ok) {
             const data = await response.json();
             setNote(data);

@@ -12,7 +12,9 @@ const Home = () => {
 
     const fetchNotes = async () => {
       try {
-        const response = await fetch('/api/getAll');
+        const response = await fetch('/api/getAll', {
+          method: 'GET',
+        });
         if (response.ok) {
           const data = await response.json();
           setNotes(data);
